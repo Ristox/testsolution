@@ -1,38 +1,49 @@
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Add team page</title>
-</head>
-<body>
-<h1>Add team page</h1>
-<p>Here you can add a new team.</p>
-<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/add.html">
-<table>
-<tbody>
-	<tr>
-		<td>Name:</td>
-		<td><form:input path="name" /></td>
-	</tr>
-	<tr>
-		<td>Rating:</td>
-		<td><form:input path="rating" /></td>
-	</tr>
-	<tr>
-		<td><input type="submit" value="Add" /></td>
-		<td></td>
-	</tr>
-</tbody>
-</table>
-</form:form>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%> 
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<p><a href="${pageContext.request.contextPath}/index.html">Home page</a></p>
-</body>
-</html>
+<spring:message code="addteam.title" var="pagetitle"/>
+<t:template title="${pagetitle}">
+    <h1><spring:message code="addteam.heading"/></h1>
+    <p><spring:message code="addteam.intro"/></p>
+    
+    <form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/add.html">
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <td><spring:message code="addteam.field.name"/></td>
+                    <td><form:input class="form-control" path="name" /></td>
+                </tr>
+                <tr>
+                    <td><spring:message code="addteam.field.rating"/></td>
+                    <td><form:input class="form-control" path="rating" /></td>
+                </tr>
+                <tr>
+                    <td><spring:message code="addteam.field.organization"/></td>
+                    <td>
+                        <form:select class="form-control" path="organization" items="${organizations}" itemLabel="name" />
+                     </td>
+                </tr>
+                <tr>
+                <td><spring:message code="editteam.field.members"/></td>
+                    <td>
+                        <%-- TODO: improve "itemLabel" concatenation - 
+                                   how to avoid @Transient Member.fullDescription here and instead use some sort of 2nd-level "Member"-formatter?
+                                   (considering that MemberFormatter is already in use for conversion between <id> string and <Member> object so it cannot be used) --%>
+                        <form:select class="form-control" path="members" multiple="true" items="${teammembers}" size="8" itemLabel="fullDescription" /> 
+                     </td>
+                </tr>
+                <tr>
+                    <spring:message code="addteam.button.add" var="buttontext"/>
+                    <td><input class="btn-info" type="submit" value="${buttontext}" /></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </form:form>
+
+    <p><a href="${pageContext.request.contextPath}/index.html"><spring:message code="common.link.homepage"/></a></p>   
+</t:template>

@@ -161,3 +161,11 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+#NB project files
+/nbactions.xml
+/nb-configuration.xml
+
+#NB-generated metadata
+/src/main/webapp/META-INF/context.xml
+/src/main/resources/META-INF/
